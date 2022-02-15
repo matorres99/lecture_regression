@@ -1,0 +1,11 @@
+how to test dataset models
+
+
+
+(training)            (test)
+
+dataset1 (75)        dataset2 (25)
+data1    (75)         data2   (25)
+target1  (75)        target2  (25)
+
+train model against training portion of data, then use test portion as real world set

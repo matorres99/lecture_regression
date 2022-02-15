@@ -11,7 +11,7 @@ import numpy
 
 dataset = pandas.read_csv("dataset.csv")
 
-target = dataset.iloc[:,0].values
+target = dataset.iloc[:,2].values
 data = dataset.iloc[:,3:9].values
 
 kfold_object = KFold(n_splits=4)
@@ -32,19 +32,11 @@ for training_index, test_index in kfold_object.split(data):
 	target_training = target[training_index]
 	data_test = data[test_index]
 	target_test = target[test_index]
-	machine = linear_model.LinearRegression()
+	machine = linear_model.LogisticRegression()
 	machine.fit(data_training, target_training)
 	new_target = machine.predict(data_test)
 	print(metrics.r2_score(target_test, new_target))
 	
-	new_target_newaxis = new_target[:,numpy.newaxis]
-	print(new_target_newaxis)
-	mini_regression_machine = linear_model.LinearRegression()
-	mini_regression_machine.fit(new_target_newaxis, target_test)
-	
-	pyplot.scatter(new_target, target_test)
-	pyplot.plot(new_target_newaxis ,mini_regression_machine.predict(new_target_newaxis), color="k")
-	pyplot.savefig("scatterplot_" + str(i) + 
-		".png")
+	print("Accuracy Score: ", metrics.accuracy_score(target_test, new_target))
+	print("Confusion Matrix: \n", metrics.confusion_matrix(target_test, new_target))
 	pyplot.close()
-
